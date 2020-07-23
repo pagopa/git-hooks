@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#
+# Enure everything is fine before pushing stuff
+#
+
+yarn build && yarn jest && yarn lint
