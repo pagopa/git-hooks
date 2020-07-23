@@ -1,4 +1,4 @@
-GIT HOOKS
+#GIT HOOKS
 
 A collection of useful git hooks to automate part of our workflow
 
