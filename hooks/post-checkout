@@ -6,10 +6,14 @@
 
 prevHEAD=$1                                                                      
 newHEAD=$2   
+checkoutMode=$3 # 1: branches, 0: files   
 
 check_run() {
-    changed_files="$(git diff --name-only $prevHEAD..$newHEAD)"
-	echo "$changed_files" | grep --quiet "$1" && eval "$2"
+    # it works only if I'm switching branch
+    if [[ $checkoutMode == 1 ]]; then
+        changed_files="$(git diff --name-only $prevHEAD..$newHEAD)"
+	    echo "$changed_files" | grep --quiet "$1" && eval "$2"
+    fi
 }
 
 # run yarn install when dependencies have changed
