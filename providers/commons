@@ -1,0 +1,11 @@
+# Author: security@pagopa.it
+# Description: list of regex for "incidents" that happened at least once
+# Usage: meant to be used as a provider file for git-secrets (grep "^[^#[:space:]]" file)
+
+
+# Azure Storage Account Access Key (so far they have this format)
+# alternatively we can grep for endpoint suffixes like core.windows.net
+[A-Za-z0-9+\/]{86}==
+
+# Slack tokens, more generic than bot tokens (xoxb-***)
+xox[a|b|p|o]-[a-zA-Z0-9-]*
