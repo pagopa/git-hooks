@@ -1,17 +1,22 @@
 #!/bin/bash
-
-repo=pagopa/git-hooks
-branch=master
-
-# to use local files instead of github's
-is_local=$1
+# run this script inside your target repository
+# like:
+# cd myproject/
+# ../git-hooks/install.sh
 
 # check if is a git repo
 if [ ! -d ".git" ]; then
-  echo "Please run this script inside a git repository"
+  echo "Please run this script inside your target git repository"
   exit 1
 fi
 
+# check if git-secrets is installed
+if [ ! -x $(command -v git-secrets > /dev/null 2>&1) ]; then
+    echo "The git-secrets binary is not available. Install from source or package or check your PATH."
+    exit 1
+fi
+
+# TODO we could avoid the array declaration and traverse the dirs
 # hooks to be installed
 declare -a hooks=(
     "post-checkout"
@@ -20,41 +25,38 @@ declare -a hooks=(
     "pre-commit"
 )
 
+# providers to be installed
+declare -a providers=(
+    "commons"
+)
+
+# get script directory
+script_directory="$(dirname $0)"
+
 # install each hook
+mkdir -p ".git/hooks"
 for hook in "${hooks[@]}"
 do
     dest=".git/hooks/$hook"
-    if [ -z "$is_local" ]; then
-        url="https://raw.githubusercontent.com/$repo/$branch/hooks/$hook"
-        echo "Download from $url"
-        curl "$url" -o "$dest"
-    else 
-        script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-        file="$script_directory/hooks/$hook"
-        echo "Copying $file"
-        cp "$file" "$dest"
-    fi
-
+    file="$script_directory/hooks/$hook"
+    echo "Copying hook file: $file"
+    cp "$file" "$dest"
     chmod +x "$dest"
 done
 
-# Install git-secrets command
-function command_exists {
-  #this should be a very portable way of checking if something is on the path
-  #usage: "if command_exists foo; then echo it exists; fi"
-  type "$1" &> /dev/null
-}
+# install each provider and setup the git-secrets engine
+# the configuration is saved in .git/config secrets.providers section
+mkdir -p ".git/git-secrets-providers"
+for provider in "${providers[@]}"
+do
+    dest=".git/git-secrets-providers/$provider"
+    file="$script_directory/providers/$provider"
+    echo "Copying provider file: $file"
+    cp "$file" "$dest"
+    # add patterns
+    git secrets --add-provider -- grep '^[^#[:space:]]' $dest
+    echo "Added the following patterns to block local commits:"
+    grep '^[^#[:space:]]' $dest # maybe avoid if too verbose in future
+done
 
-if [ ! -f /usr/local/bin/git-secrets ]; then 
-    echo "You don't have git secrets installed. It will be used by some hooks."
-    read -p "Would you like to install git secrets (y/n)? " -n 1 -r
-    echo   
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo "Installing git-secrets"
-        download_dir="/tmp/git-secrets-$(date +%s)"
-        git clone --depth 1 https://github.com/awslabs/git-secrets.git $download_dir
-        cd $download_dir || exit
-        make install
-        echo "git-secrets installed. Please see https://github.com/awslabs/git-secrets for command usage."
-    fi
-fi
+printf "\nAll done!\n"
