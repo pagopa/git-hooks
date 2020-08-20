@@ -17,6 +17,7 @@ declare -a hooks=(
     "post-checkout"
     "post-merge"
     "pre-push"
+    "pre-commit"
 )
 
 # install each hook
@@ -36,3 +37,24 @@ do
 
     chmod +x "$dest"
 done
+
+# Install git-secrets command
+function command_exists {
+  #this should be a very portable way of checking if something is on the path
+  #usage: "if command_exists foo; then echo it exists; fi"
+  type "$1" &> /dev/null
+}
+
+if [ ! -f /usr/local/bin/git-secrets ]; then 
+    echo "You don't have git secrets installed. It will be used by some hooks."
+    read -p "Would you like to install git secrets (y/n)? " -n 1 -r
+    echo   
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Installing git-secrets"
+        download_dir="/tmp/git-secrets-$(date +%s)"
+        git clone --depth 1 https://github.com/awslabs/git-secrets.git $download_dir
+        cd $download_dir || exit
+        make install
+        echo "git-secrets installed. Please see https://github.com/awslabs/git-secrets for command usage."
+    fi
+fi

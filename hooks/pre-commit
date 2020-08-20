@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#
+# Enure everything is fine before committing stuff
+#
+
+git secrets --pre_commit_hook -- "$@"
