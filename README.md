@@ -25,7 +25,7 @@ bash <(curl -s https://raw.githubusercontent.com/pagopa/git-hooks/master/install
 ```
 
 ### Locally
-Clone this repository anywhere in your machine, `cd` into your repository's root and then
+Clone this repository anywhere in your machine, `cd` into your target project's root and then
 ```bash
 path/to/git-hooks-repo/install.sh 1
 ```
