@@ -19,7 +19,7 @@ A collection of opinionated git hooks to automate part of our workflow
 ## Installation
 
 ### From a remote script
-`cd` into your repository's root and then
+`cd` into your target project's root and then
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/pagopa/git-hooks/master/install.sh)
 ```
