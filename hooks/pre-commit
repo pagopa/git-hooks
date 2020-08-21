@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#
+# Ensure everything is fine before committing stuff
+#
+
+# Test if you can actually execute the provider
+PROVIDER_COMMAND=$(git config --get secrets.providers)
+if [ ! -z "$PROVIDER_COMMAND" ]; then
+    # no need to print the output
+    $($PROVIDER_COMMAND > /dev/null 2>&1)
+    RETURN_CODE=$?
+    if [ $RETURN_CODE -ne 0 ]; then
+        echo "Provider command:"
+        echo "$PROVIDER_COMMAND"
+        echo "The above command failed execution. Nothing has been commited."
+        echo "Please check your .git/config file, secrets.providers section."
+        # whatever value != 0
+        exit $RETURN_CODE
+    fi
+fi
+
+git secrets --pre_commit_hook -- "$@"

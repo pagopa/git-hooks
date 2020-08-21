@@ -1,6 +1,14 @@
 # GIT HOOKS
 
-A collection of useful git hooks to automate part of our workflow
+A collection of opinionated git hooks to automate part of our workflow
+
+## Features
+* Prevent from committing secrets
+* Update dependencies when switching/merging branches
+* Prevent from pushing untested code
+
+## Requirements
+* `git-secrets` - see [here](https://github.com/awslabs/git-secrets) for more info.
 
 ## Installation
 

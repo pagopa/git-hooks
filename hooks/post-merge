@@ -10,4 +10,4 @@ check_run() {
 }
 
 # run yarn install when dependencies have changed
-check_run yarn.lock "yarn cache list && yarn install"
+check_run yarn.lock "yarn cache clean && yarn install"
