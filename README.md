@@ -2,6 +2,12 @@
 
 A collection of opinionated git hooks to automate part of our workflow
 
+## Sentences you will never hear again
+* Someone leaked a database key, we need to regenerate it. @here update all your local secret files.
+* Oops! I forgot to fix tests, too.
+* LGTM but fix lint errors before merging.
+* After merging your branch it doesn't compile anymore! | _Have you tried `yarn start`?_ | oops...
+
 ## Features
 * Prevent from committing secrets
 * Update dependencies when switching/merging branches
