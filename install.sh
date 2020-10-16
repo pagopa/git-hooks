@@ -31,6 +31,7 @@ declare -a hooks=(
     "post-merge"
     "pre-push"
     "pre-commit"
+    "prepare-commit-msg"
 )
 
 # providers to be installed
