@@ -4,12 +4,22 @@
 #
 
 BRANCHES_TO_SKIP=(master develop test)
+MAX_MSG_LENGHT=72
 
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 SPLITTED_BRANCH=($(echo "$BRANCH_NAME" | tr '-' '\n'))
 STORY_ID="${SPLITTED_BRANCH[0]}"
 
-# Update the commit message if is not in the BRANCHES_TO_SKIP list
-if [ -n "$BRANCH_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
-   sed -i '.bak' "1s/^/[#$STORY_ID] /" $1
+COMMIT_MSG=$(cat ${1})
+
+TOTAL_MSG_LENGHT=$((${#COMMIT_MSG}+${#STORY_ID}+3))
+
+if (( $TOTAL_MSG_LENGHT < $MAX_MSG_LENGHT)); then
+   # Update the commit message if is not in the BRANCHES_TO_SKIP list
+   if [ -n "$BRANCH_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
+      sed -i '.bak' "1s/^/[#$STORY_ID] /" $1
+   fi
+else
+   echo "Commit message longer than ${MAX_MSG_LENGHT} characters"
+   exit 1
 fi
