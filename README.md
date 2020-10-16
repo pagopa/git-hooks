@@ -14,7 +14,7 @@ A collection of opinionated git hooks to automate part of our workflow
 - Prevent from committing secrets
 - Update dependencies when switching/merging branches
 - Prevent from pushing untested code
-- Prepend the storyid to the commit message
+- Prepend the storyid to the commit message if the branch is in the shape `storyId-description` where `storyId` is expected to be a number.
 
 ## Requirements
 
