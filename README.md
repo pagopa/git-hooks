@@ -14,7 +14,7 @@ A collection of opinionated git hooks to automate part of our workflow
 - Prevent from committing secrets
 - Update dependencies when switching/merging branches
 - Prevent from pushing untested code
-- Prepend the commit message with the storyid
+- Prepend the storyid to the commit message
 
 ## Requirements
 
