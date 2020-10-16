@@ -3,9 +3,13 @@
 # Automatically adds story id to every commit message.
 #
 
+BRANCHES_TO_SKIP=(master develop test)
+
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 SPLITTED_BRANCH=($(echo "$BRANCH_NAME" | tr '-' '\n'))
 STORY_ID="${SPLITTED_BRANCH[0]}"
 
-sed -i '.bak' "1s/^/[#$STORY_ID] /" $1
-value=`cat ${1}`
+# Update the commit message if is not in the BRANCHES_TO_SKIP list
+if [ -n "$BRANCH_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]]; then
+   sed -i '.bak' "1s/^/[#$STORY_ID] /" $1
+fi
