@@ -1,0 +1,7 @@
+# see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
+
+# Global owners
+* @balanza
+
+# Security concerns
+/providers @pp-ps
