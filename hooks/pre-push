@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Esnure everything is fine before pushing stuff
+# Ensure everything is fine before pushing stuff
 #
 
 yarn lint && yarn build && yarn test
