@@ -9,3 +9,6 @@
 
 # Slack tokens, more generic than bot tokens (xoxb-***)
 xox[a|b|p|o]-[a-zA-Z0-9-]*
+
+# Github tokens, not sure about length, so we try to catch in 32 - 255 interval
+gh[p|o|u|s|r]_[A-Za-z0-9_]{32,255}
