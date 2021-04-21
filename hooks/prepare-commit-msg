@@ -3,7 +3,7 @@
 #
 # Get the story/issue ID from the input branch name
 #
-get_id_by_brench () {
+get_id_by_branch () {
    SPLITTED_BRANCH=($(echo "$1" | tr '-' '\n'))
    STORY_ID="${SPLITTED_BRANCH[0]}"
    ISSUE_ID="${SPLITTED_BRANCH[1]}"
