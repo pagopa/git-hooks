@@ -1,0 +1,7 @@
+# Author: security@pagopa.it
+# Description: list of regex for simil-secrets allowed to be committed
+# Usage: meant to be used as a allowed file for git-secrets (grep "^[^#[:space:]]" file)
+
+
+# package integrity hash string (used by yarn.lock)
+integrity sha512-[A-Za-z0-9+\/]{86}==

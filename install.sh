@@ -39,6 +39,11 @@ declare -a providers=(
     "commons"
 )
 
+# allowed to be installed
+declare -a alloweds=(
+    "commons"
+)
+
 # copy a file from current file system or from github, depending from the value of $is_local
 function copyFile {
     source=$1
@@ -80,6 +85,19 @@ do
     git secrets --add-provider -- grep '^[^#[:space:]]' "$dest"
     echo "Added the following patterns to block local commits:"
     grep '^[^#[:space:]]' "$dest" # maybe avoid if too verbose in future
+done
+
+# install each allowed and setup the git-secrets engine
+# the configuration is saved in .git/config secrets.allowed section
+mkdir -p ".git/git-secrets-alloweds"
+for allowed in "${alloweds[@]}"
+do
+    source="alloweds/$allowed"
+    dest=".git/git-secrets-alloweds/$allowed"
+    copyFile "$source" "$dest"
+    grep '^[^#[:space:]]' "$dest" | xargs -I{} git secrets --add -a "{}"
+    echo "Added the following patterns to ALLOW local commits:"
+    grep '^[^#[:space:]]' "$dest"
 done
 
 printf "\nAll done!\n"
