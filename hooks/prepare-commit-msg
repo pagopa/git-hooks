@@ -29,12 +29,13 @@ BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 ID=$(get_id_by_branch "$BRANCH_NAME")
 
 if [[ ! -z "$ID" ]] ; then
-   COMMIT_MSG=$(cat ${1})   
-   TOTAL_MSG_LENGHT=$((${#COMMIT_MSG}+${#ID}+3))
+   COMMIT_MSG_HEADER=$(cat ${1} | head -n 1)   
+   TOTAL_MSG_LENGHT=$((${#COMMIT_MSG_HEADER}+${#ID}+3))
    if (( $TOTAL_MSG_LENGHT < $MAX_MSG_LENGHT)); then
       sed -i '.bak' "1s/^/$ID /" $1
    else
-      echo "Commit message longer than ${MAX_MSG_LENGHT} characters"
+      echo "Commit message header longer than ${MAX_MSG_LENGHT} characters"
+      echo "Message: $COMMIT_MSG_HEADER"
       exit 1
    fi
 fi
