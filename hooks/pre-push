@@ -1,6 +1,39 @@
 #!/bin/bash
 
 #
+# Check azure function variables
+# to be set in env file
+#
+
+attributes_to_check=(
+"tableName"
+"databaseName"
+)
+
+errors=false
+functions_dir=($(find . -name function.json -print0 | xargs -0 -n1 dirname | sort --unique))
+
+for curr_function_dir in "${functions_dir[@]}"; do
+    curr_function_json="${curr_function_dir}/function.json"
+    for attribute in "${attributes_to_check[@]}"; do
+        referenced_in_env=$(jq ".bindings[] | select( has(\"${attribute}\") == true) | .${attribute} | startswith(\"%\")" "${curr_function_json}")
+        if [ "$referenced_in_env" = false ]
+        then
+            echo "Error in ${curr_function_json}: \"${attribute}\" must be referenced from env file"
+            errors=true
+        fi
+    done
+done
+
+if [ "$errors" = true ]
+then
+    echo "fix errors in function.json"
+    exit 1
+else
+    echo "function.json ok"
+fi
+
+#
 # Ensure everything is fine before pushing stuff
 #
 
