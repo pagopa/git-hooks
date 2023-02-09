@@ -21,3 +21,18 @@ if [ ! -z "$PROVIDER_COMMAND" ]; then
 fi
 
 git secrets --pre_commit_hook -- "$@"
+
+#
+# Double-check to prevent unwanted commit on master/main branch
+#
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
+  printf "\n\e[33mYou are about to commit on %s branch.\e[0m\n\n" "$branch"
+  read -rp "Write 'yes' to continue, enter to abort: " response < /dev/tty
+  ##response=${response,,} # tolower
+  if [[ ! $response =~ ^(y|yes) ]]; then
+    echo "Commit aborted."
+    exit 1
+  fi
+fi
