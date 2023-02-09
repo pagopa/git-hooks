@@ -8,6 +8,7 @@ A collection of opinionated git hooks to automate part of our workflow
 - Oops! I forgot to fix tests, too.
 - LGTM but fix lint errors before merging.
 - After merging your branch it doesn't compile anymore! | _Have you tried `yarn install`?_ | oops...
+- Oh no, I accidentally committed my changes on master
 
 ## Features
 
